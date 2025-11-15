@@ -1,0 +1,69 @@
+{
+  "name": "dataops-copilot",
+  "displayName": "DataOps Copilot",
+  "description": "AI-powered code generation for data engineers",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:python"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dataops-copilot.generateCode",
+        "title": "DataOps: Generate Code from Prompt"
+      },
+      {
+        "command": "dataops-copilot.improveCode",
+        "title": "DataOps: Improve Selected Code"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "dataops-copilot.generateCode",
+        "key": "ctrl+shift+g",
+        "mac": "cmd+shift+g",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "DataOps Copilot",
+      "properties": {
+        "dataopsCopilot.apiUrl": {
+          "type": "string",
+          "default": "http://localhost:8000/api/v1",
+          "description": "Backend API URL"
+        },
+        "dataopsCopilot.enableAutocomplete": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable autocomplete suggestions"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.40.0",
+    "typescript": "^5.1.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
