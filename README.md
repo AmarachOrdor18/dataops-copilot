@@ -1,6 +1,12 @@
 # DataOps Copilot 🚀
 
-> "GitHub Copilot" for data engineers - AI-powered code generation for ETL tasks
+![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green.svg)
+![React](https://img.shields.io/badge/React-18.2.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Gemini](https://img.shields.io/badge/Powered%20by-Google%20Gemini-orange.svg)
+
+> "GitHub Copilot" for data engineers - AI-powered code generation for ETL tasks using Google Gemini
 
 ## Features
 
@@ -8,7 +14,8 @@
 🔧 **Code Improvement**: Get intelligent suggestions to optimize existing data pipelines  
 ⚡ **Smart Autocomplete**: Context-aware code completion in VSCode  
 💾 **Intelligent Caching**: Redis-powered caching for faster responses  
-🎯 **Multiple Interfaces**: VSCode extension + Web dashboard
+🎯 **Multiple Interfaces**: VSCode extension + Web dashboard  
+🚀 **Powered by Google Gemini**: Fast, free, and powerful AI model
 
 ## Quick Start
 
@@ -16,8 +23,11 @@
 
 - Python 3.11+
 - Node.js 18+
-- Docker & Docker Compose
-- OpenAI API key
+- Docker & Docker Compose (optional)
+- **Google Gemini API key** (get it free at https://makersuite.google.com/app/apikey)
+  - 60 requests per minute
+  - 1,500 requests per day
+  - **100% FREE!**
 
 ### Installation
 
@@ -27,21 +37,52 @@ git clone https://github.com/yourusername/dataops-copilot.git
 cd dataops-copilot
 ```
 
-2. **Setup environment variables**
+2. **Setup Backend**
 ```bash
-cp backend/.env.example backend/.env
-# Edit backend/.env and add your OPENAI_API_KEY
+cd backend
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Setup environment variables
+cp .env.example .env
+# Edit .env and add your GEMINI_API_KEY
+nano .env
 ```
 
-3. **Start services with Docker**
+3. **Start Redis**
 ```bash
-docker-compose up -d
+docker run -d -p 6379:6379 --name redis-dataops redis:7-alpine
 ```
 
-The backend API will be available at `http://localhost:8000`
+4. **Start Backend**
+```bash
+cd backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-4. **Access the API documentation**
-Open `http://localhost:8000/docs` for interactive API docs
+5. **Setup Web Dashboard**
+```bash
+cd web-dashboard
+
+# Install dependencies
+npm install
+
+# Setup environment
+cp .env.example .env
+
+# Start dev server
+npm run dev
+```
+
+6. **Access the application**
+- API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+- Web Dashboard: http://localhost:5173
 
 ## Usage
 
@@ -116,7 +157,7 @@ curl -X POST http://localhost:8000/api/v1/code/improve \
 ## Tech Stack
 
 - **Backend**: FastAPI, Python 3.11
-- **LLM**: OpenAI GPT-4
+- **LLM**: Google Gemini 2.5 Flash (Free Tier)
 - **Cache**: Redis
 - **Frontend**: React, TypeScript, Vite
 - **Editor**: Monaco Editor
@@ -154,11 +195,27 @@ npm run lint
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key | Required |
-| `OPENAI_MODEL` | Model to use | `gpt-4` |
+| `GEMINI_API_KEY` | Google Gemini API key | Required |
 | `REDIS_HOST` | Redis host | `localhost` |
 | `REDIS_PORT` | Redis port | `6379` |
 | `CACHE_TTL` | Cache TTL in seconds | `3600` |
+
+## Getting Your Gemini API Key
+
+1. Visit https://makersuite.google.com/app/apikey
+2. Click "Create API Key" or "Get API Key"
+3. Copy the key and add it to your `.env` file
+4. **It's FREE!** No credit card required
+
+## Why Google Gemini?
+
+✅ **Completely Free** - No credit card required, generous free tier  
+✅ **Fast Performance** - Gemini 2.5 Flash is optimized for speed  
+✅ **Great Code Quality** - Excellent at generating Python ETL code  
+✅ **High Rate Limits** - 60 requests/minute, 1,500/day  
+✅ **Easy Setup** - Get API key in seconds  
+
+vs OpenAI ($5 credit that expires) or Claude (limited free tier)
 
 ## Contributing
 
@@ -174,12 +231,17 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## Roadmap
 
+- [x] Google Gemini integration
+- [x] Redis caching
+- [x] Web dashboard
+- [x] VSCode extension
 - [ ] Support for more LLM providers (Claude, Llama)
 - [ ] Fine-tuning on data engineering patterns
 - [ ] Integration with dbt, Airflow
 - [ ] Code version history
 - [ ] Collaborative features
 - [ ] Pre-built templates library
+- [ ] Multi-language support (SQL, Scala, etc.)
 
 ## Support
 
